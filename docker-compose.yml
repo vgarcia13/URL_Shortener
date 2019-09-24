@@ -1,0 +1,26 @@
+version: '3'
+services:
+   db:
+     image: postgres
+     container_name: postgres
+     ports:
+       - "5432:5432"
+   redis:
+     image: redis:alpine
+     # command: redis-server --requirepass redis
+     command: redis-server
+     container_name: redis
+     ports:
+       - "6379:6379"
+   web:
+     build: .
+     # command: python manage.py runserver 0.0.0.0:8000
+     command: bash dockerutils/wait-for-postgres.sh
+     container_name: django
+     volumes:
+       - .:/code
+     ports:
+       - "8000:8000"
+     depends_on:
+       - db
+       - redis
