@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'shortener.apps.ShortenerConfig',
-    # 'bootstrap4',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
