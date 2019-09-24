@@ -15,7 +15,7 @@
         </form>
         <form method="GET" action={% url "shortener:url" %}>
             {% csrf_token %}
-            <div class="mt-5 hero-unit d-none" id="resultDiv" style="padding: 20px;border-radius: 6px;">
+            <div class="mt-5 hero-unit d-none" id="resultDiv" style="margin-bottom: 3rem !important;padding: 20px;border-radius: 6px;">
                 <h5></h5>
                 <input type="hidden" name="get_url" id="get_url">
                 <button type="submit" id="submit_get_form" class="btn btn-link d-none">
