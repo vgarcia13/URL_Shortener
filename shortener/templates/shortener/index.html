@@ -1,4 +1,67 @@
 {% extends "base.html" %}
-{% block content %}
 
+{% block content %}
+    <div class="mt-5 col-lg-12 text-center">
+        <h1>URL Shortener Application</h1>
+        <p class="lead">Instructions: Insert a URL in the input below and click <b>"Go"</b></p>
+        <form method="POST" action={% url "shortener:url" %}>
+            {% csrf_token %}
+            <div class="mt-5 hero-unit" style="background-color: #eeeeee;padding: 20px;border-radius: 6px;">
+                <input type="text" class="form-control" id="url" name="url" aria-describedby="urlHelp"
+                       placeholder="http://" required>
+                <small id="urlHelp" class="form-text text-muted">We'll validate the URL after the submit</small>
+                <button type="submit" class="btn btn-primary btn-large mt-5" style="color: white">&nbsp;&nbsp;Go&nbsp;&nbsp;</button>
+            </div>
+        </form>
+        <form method="GET" action={% url "shortener:url" %}>
+            {% csrf_token %}
+            <div class="mt-5 hero-unit d-none" id="resultDiv" style="padding: 20px;border-radius: 6px;">
+                <h5></h5>
+                <input type="hidden" name="get_url" id="get_url">
+                <button type="submit" id="submit_get_form" class="btn btn-link d-none">
+                    Redirect to the original URL
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $("form").on("submit", function (e) {
+            e.preventDefault();
+            let method = $(this).attr('method');
+            $.ajax({
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                method: method,
+                success: function (data) {
+                    switch (method) {
+                        case "POST":
+                            if(data.code === 200) {
+                                $('#resultDiv').css("background-color", "#dbffdb");
+                                $('#get_url').val(data.message);
+                                $('#submit_get_form').removeClass("d-none");
+                            }
+                            else {
+                                $('#resultDiv').css("background-color", "#ffdbdb");
+                                $('#submit_get_form').addClass("d-none");
+                            }
+                            $('#resultDiv h5').text(data.message);
+                            $('#resultDiv').removeClass("d-none");
+                            break;
+                        case "GET":
+                            $('#submit_get_form').addClass("d-none");
+                            $('#resultDiv').css("background-color", "#dbffdb");
+                            $('#resultDiv h5').text("Original URL: " + "\n" + data.message);
+                            setTimeout(redirect(data.message), 5000);
+                            break;
+                    }
+                }
+            });
+        });
+        function redirect(url) {
+            window.location.replace(url);
+        }
+    </script>
 {% endblock %}

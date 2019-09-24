@@ -120,6 +120,9 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
+# Bitly Settings
+BITLY_ACCESS_TOKEN = '5608af10f4502fad9f3b6f33970345ea35ce86c6'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
