@@ -21,6 +21,6 @@ from shortener import views
 
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
-    path('shortener/', include('shortener.urls')),
+    url(r'^shortener/', include(('shortener.urls', 'shortener'), namespace='shortener')),
     path('admin/', admin.site.urls),
 ]
